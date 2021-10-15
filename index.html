@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            /* outline: solid 1px rgba(255, 0, 0, 0.61);  */
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            display: block;
+            text-align: center;
+            padding: 32px;
+            background-color: rgb(255, 178, 10);
+            background-size: cover;
+            background-position: center;
+            padding: 40px;
+        }
+
+        .numForm {
+            width: 36%;
+            margin: auto;
+        }
+
+        label, h2{
+            display: inline-block;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            font-size: 24px;
+            font-weight: 900;
+        }
+        
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 4px;
+            outline: none;
+            border: 1px solid rgb(158, 157, 157);
+        }
+
+        .enterButton {
+            margin-top: 20px;
+            padding: 12px 16px;
+            font-size: 16px;
+            background-color: rgb(255, 178, 10);
+            color: #000;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        p {
+            font-size: 18px;
+        }
+
+    </style>
+
+    <script language="javascript">
+
+        //Create the arrays to store the factors 
+        var num1Factors = [];
+        var num2Factors = [];
+
+        //Create two global variables to store each input numbers
+        var number1, number2; 
+
+        //Help with sorting 
+        function compareFunction (a,b) {
+            // 1. if result < 0 ... a comes first 
+            // 2. if result = 0 ... nothing will change 
+            // 3. if result > 0 ... b comes first 
+            return a-b;
+        }
+
+        //Return true if x is a factor of y
+        function isAFactor(x, y) {
+            if (y % x == 0) return true;
+            else return false; 
+        }
+
+        //Populate the array with the number's factors
+        function populateFactorArray(num, arr) {
+            for (var i=0; i<= (num/2); i++){
+                if (isAFactor(i, num) == true) {
+                    arr.push(i);
+                }
+            }
+
+            //Sort the array 
+            arr.sort(compareFunction);
+
+            return arr; 
+        }
+
+        //Return true if the two numbers are amicable 
+        function checkAmicable() {
+            number1 = document.getElementById('num1');
+            number2 = document.getElementById('num2');
+
+            num1Factors = populateFactorArray(number1.value, num1Factors);
+            num2Factors = populateFactorArray(number2.value, num2Factors);
+
+            //Variables to store the sum of each number's factor 
+            var sumNum1Factors = 0; 
+            var sumNum2Factors = 0; 
+
+            for (var i=0; i<num1Factors.length; i++) {
+                sumNum1Factors += num1Factors[i];
+            }
+
+            for (var i=0; i<num2Factors.length; i++) {
+                sumNum2Factors += num2Factors[i];
+            }
+
+            if ((sumNum1Factors == number2.value) && (sumNum2Factors == number1.value)) return true; 
+            else return false; 
+        }
+
+        //Display a popup that shows both number's factors 
+        function displayAlert() {
+            number1 = document.getElementById('num1');
+            number2 = document.getElementById('num2');
+
+            alert("The factor of " + number1.value + " are: " + num1Factors + 
+            "\nThe factor of " + number2.value + " are: " + num2Factors);
+        }
+
+        //Display the results + popup 
+        function displayResult() {  
+            var result = document.getElementById('result');
+            number1 = document.getElementById('num1');
+            number2 = document.getElementById('num2');
+
+            if (checkAmicable() == true) {
+                result.innerHTML = "The numbers: " + number1.value + " and " + number2.value + " are amicable." + "<br> <br>" + "🔁 <i>Refresh the page!</i>"; 
+            }
+            else {
+                result.innerHTML = "The numbers: " + number1.value + " and " + number2.value + " are not amicable." + "<br> <br>" + "🔁 <i>Refresh the page!</i>"; 
+            }
+
+            displayAlert();
+        }
+
+    </script>
+</head>
+<body>
+    <h1>🤔 Amicable Numbers</h1>
+
+    <!-- Display the form to enter two numbers -->
+    <section class="numForm">
+        <form action="" class="form-item">
+            <div class="num">
+                <label for="fname">Number 1</label>
+                <input type="number" id="num1" placeholder="Enter number 1" required>
+            </div>
+            <div class="num">
+                <label for="lname">Number 2</label>
+                <input type="number" id="num2" placeholder="Enter number 2" required>
+            </div>
+            
+            <!-- Start the function displayResult() when user clicks the button -->
+            <input type="button" value="Enter" class="enterButton" onclick="displayResult()">
+        </form>
+
+        <h2>Result</h2>
+
+        <!-- Display the statement that shows whether the two numbers are amicable or not + popup -->
+        <div>
+            <p id="result"></p>
+        </div>
+
+
+    </section>
+</body>
+</html>
